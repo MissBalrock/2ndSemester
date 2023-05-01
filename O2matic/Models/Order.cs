@@ -13,5 +13,14 @@ namespace O2matic.Models
         public string Customer { get; set; }
         public int EquiptmentId { get; set; }
         public int CustomerId { get; set; }
+
+        public Order(int price, DateTime date, string customer, int equiptmentId, int customerId)
+        {
+            Price = price;
+            Date = date;
+            Customer = customer;
+            EquiptmentId = equiptmentId;
+            CustomerId = customerId;
+        }   
     }
 }

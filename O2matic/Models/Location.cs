@@ -15,5 +15,16 @@ namespace O2matic.Models
         public int CustomerId { get; set; }
         public int OrderID { get; set; }
         public int StockID { get; set; }
+
+        public Location(string address, string title, int equiptmentId, int bussinestripId, int customerId, int orderID, int stockID)
+        {
+            Address = address;
+            Title = title;
+            EquiptmentId = equiptmentId;
+            BussinestripId = bussinestripId;
+            CustomerId = customerId;
+            OrderID = orderID;
+            StockID = stockID;
+        }   
     }
 }
