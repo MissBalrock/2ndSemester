@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:O2matic"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:views="clr-namespace:O2matic.Views"
+        Title="O2matic"
+        Width="800"
+        Height="450" 
+        mc:Ignorable="d">
     <Grid>
-
+        <views:EquipmentView />
     </Grid>
 </Window>
