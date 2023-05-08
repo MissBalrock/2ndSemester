@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace O2matic.Models
 {
-    public class Bussinestrip
+    public class Bussinesstrip
     {
         public string Purpose { get; set; }
         public DateTime Date { get; set; }
         public int EquiptmentId { get; set; }
         public string Location { get; set; }
 
-        public Bussinestrip(string purpose, DateTime date, int equiptmentId, string location)
+        public Bussinesstrip(string purpose, DateTime date, int equiptmentId, string location)
         {
             Purpose = purpose;
             Date = date;    
