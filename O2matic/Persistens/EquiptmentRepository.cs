@@ -1,6 +1,8 @@
 ﻿using O2matic.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -10,100 +12,99 @@ using System.Threading.Tasks;
 
 namespace O2matic.Persistens
 {
-    public class EquiptmentRepository
+    public class EquiptmentRepository : IDisposable
     {
-        private List<Equiptment> equiptments = new List<Equiptment>();
-
+        public SqlConnection Connection { get; private set; }
         public EquiptmentRepository()
         {
-            InitializeRepository();
-        }
-        private void InitializeRepository()
-        {
-            try
-            {
-                using (StreamReader sr = new StreamReader("Equiptment.csv"))
-                {
-                    String line = sr.ReadLine();
-                    while (line != null)
-                    {
-                        string[] parts = line.Split(' ');
+            var dataSource = "(local)\\SQLEXPRESS";
+            var initialCatalog = "O2maticDevelopment";
 
-                        this.Add(parts[0], int.Parse(parts[1]), int.Parse(parts[2]));
-                        line = sr.ReadLine();
-                    }
+            var connectionString = $"Data Source={dataSource};Initial Catalog={initialCatalog};Integrated Security=True;TrustServerCertificate=True";
+            Connection = new SqlConnection(connectionString);
+            Connection.Open();
+        }
+
+        public void Save(Equipment equipment)
+        {
+            var commandString = $"INSERT INTO Equipment (EquipmentTypeID, SerialNumber, RegistrationDate, LocationID) " +
+                $"VALUES ({equipment.EquipmentTypeId}, '{equipment.SerialNumber}', {DateTime.Now}, {equipment.LocationId});";
+            var command = new SqlCommand(commandString, Connection);
+
+            command.ExecuteReader().Close();
+        }
+
+        public Equipment? Get(int id)
+        {
+            var commandString = $"SELECT * FROM dbo.Equipment WHERE ID = {id}";
+            var command = new SqlCommand(commandString, Connection);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+
+                    var dateString = reader[3].ToString();
+                    var registrationDate = DateTime.UnixEpoch;
+                    if (dateString != null)
+                        registrationDate = DateTime.Parse(dateString);
+
+                    var result = new Equipment(
+                        id: Convert.ToInt32(reader[0].ToString()),
+                        equipmentTypeId: Convert.ToInt32(reader[1].ToString()),
+                        serialNumber: Convert.ToInt32(reader[2].ToString()),
+                        registrationDate: registrationDate,
+                        locationId: Convert.ToInt32(reader[4].ToString())
+                        );
+                    return result;
                 }
             }
-            catch (IOException)
-            {
-                throw;
-            }
+            return null;
         }
-        public Equiptment Add(string equiptmentType, int serialNumber, int Id)
-        {
-            Equiptment result = null;
 
-            if (!string.IsNullOrEmpty(equiptmentType) &&
-                serialNumber >= 0 &&
-                id >= 0)
+        public ICollection<Equipment> GetAll()
+        {
+            var commandString = $"SELECT * FROM dbo.Equipment";
+            var command = new SqlCommand(commandString, Connection);
+
+            var result = new List<Equipment>();
+
+            using (var reader = command.ExecuteReader())
             {
-                result = new Equiptment()
+                while (reader.Read())
                 {
-                    EquiptmentType = equiptmentType,
-                    SerialNumber = serialNumber,
-                    Id = Id
-                };
-                equiptments.Add(result);
+                    var dateString = reader[3].ToString();
+                    var registrationDate = DateTime.UnixEpoch;
+                    if (dateString != null)
+                        registrationDate = DateTime.Parse(dateString);
+
+                    result.Add(new Equipment(
+                        id: Convert.ToInt32(reader[0].ToString()),
+                        equipmentTypeId: Convert.ToInt32(reader[1].ToString()),
+                        serialNumber: Convert.ToInt32(reader[2].ToString()),
+                        registrationDate: registrationDate,
+                        locationId: Convert.ToInt32(reader[4].ToString())
+                        ));
+                }
             }
-            else
-                throw (new ArgumentException("not all arguments are Valid"));
             return result;
         }
-        public Equiptment Get(int Id)
-        {
-            Equiptment equiptment = null;
 
-            foreach (Equiptment e in equiptments)
-            {
-                if (e.Id == Id)
-                {
-                    result = e;
-                    break;
-                }
-            }
-            return result;
-        }
-        public List<Equiptment> GetAll()
+        public bool Update(Equipment equipment)
         {
-            return equiptments;
-        }
-        public void Update(string equiptmentType, int serialNumber, int Id)
-        {
-            Equiptment foundEquiptment = this.Get(Id);
 
-            if (foundEquiptment != null)
-            {
-                if (!string.IsNullOrEmpty(equiptmentType) &&
-                    serialNumber <= 0)
-                {
-                    if (foundEquiptment.EquiptmentType != equiptmentType)
-                        foundEquiptment.EquiptmentType = equiptmentType;
-                    if (foundEquiptment.SerialNumber != serialNumber)
-                        foundEquiptment.SerialNumber = serialNumber;
-                }
-                else
-                    throw (new ArgumentException("Not all arguments for equiptment are valid"));
+            var existing = Get(equipment.Id);
+
+            if (existing == null)
+                return false;
+
+
             }
-            else
-                throw new ArgumentException("Equiptment with id = " + Id + " not found"));
         }
-        public void Remove(int Id)
+
+        public void Dispose()
         {
-            Equiptment foundEquiptment = this.Get(Id);
-            if (foundEquiptment != null)
-                equiptments.Remove(foundEquiptment);
-            else
-                throw (new ArgumentException("Equiptment with id = " + Id + "not found"));
+            Connection.Close();
         }
     }
 }
