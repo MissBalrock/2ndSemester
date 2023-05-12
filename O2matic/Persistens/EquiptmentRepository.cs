@@ -14,6 +14,8 @@ namespace O2matic.Persistens
     {
         private List<Equiptment> equiptments = new List<Equiptment>();
 
+        public Equiptment result { get; private set; }
+
         public EquiptmentRepository()
         {
             InitializeRepository();
@@ -95,7 +97,7 @@ namespace O2matic.Persistens
                     throw (new ArgumentException("Not all arguments for equiptment are valid"));
             }
             else
-                throw new ArgumentException("Equiptment with id = " +id + " not found"));
+                throw new ArgumentException("Equiptment with id = " +id + " not found");
         }
         public void Remove(int id)
         {
