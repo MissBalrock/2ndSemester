@@ -15,7 +15,7 @@ namespace O2matic.Persistens
     public class EquiptmentRepository : IDisposable // Idispoddableinterfacet  lukker connection til database, så databasen ikke står åben til sidst. EquiptmentRepository har implemeteret Idisposabel
     {
         public SqlConnection Connection { get; private set; } // hentes fra MIckrosoft.Data.SqlClient, som er et bibliotek
-        public EquiptmentRepository() 
+        public EquiptmentRepository()
         {
             var dataSource = "(local)\\SQLEXPRESS"; // en variabel, der er adressen til databasen.
             var initialCatalog = "O2maticDevelopment"; // navnet på databasen
@@ -27,12 +27,12 @@ namespace O2matic.Persistens
 
         public void Save(Equipment equipment) // 
         {
-            using. // man kan inkapsle det i en using, da den ´nedarver fra en klasse som immplemetere Idisposable
+            // man kan inkapsle det i en using, da den ´nedarver fra en klasse som immplemetere Idisposable
             var commandString = "INSERT INTO Equipment (EquipmentTypeID, SerialNumber, RegistrationDate, LocationID) " + // $= streng interpulation // Equiptment = tabel navnet på databasemn.// f.eks. serialnumber er navnet på en kolonne i databasen.
                 $"VALUES ({equipment.EquipmentTypeId}, '{equipment.SerialNumber}', {DateTime.Now}, {equipment.LocationId});"; // Values funktion definerer veriderne i databasen for kolonnerne. // .=henter property fra model klassen.
             var command = new SqlCommand(commandString, Connection); // nu bliver SqlCommand istansieret og kommer ind i databasen.
 
-            command.ExecuteReader().Close(); //lukker connection til databsen/table. 
+            command.ExecuteReader().Close(); //lukker connection til databsen/table.  
         }
 
         public Equipment? Get(int id) // returnere det udstyr du leder efter, ved at søge efter ID. // der mangler en objekt reference, som kan være null, for at tjekke om man har en værdi som reference.
@@ -45,7 +45,7 @@ namespace O2matic.Persistens
                 while (reader.Read()) // så længe metoden ExecuteReader metoden er igang med at læse
                 {
 
-                    var dateString = reader[3].ToString(); 
+                    var dateString = reader[3].ToString();
                     var registrationDate = DateTime.UnixEpoch;
                     if (dateString != null)
                         registrationDate = DateTime.Parse(dateString); // tjekekr om registration date er = null. // Dette har vi valgt at gøre, for at der ikke kan opstå en fejl.
@@ -99,8 +99,14 @@ namespace O2matic.Persistens
             if (existing == null)
                 return false;
 
+            var commandString = "UPDATE Equipment" +
+                 $"SET EquipmentTypeID = {equipment.EquipmentTypeId}, SerialNumber = {equipment.SerialNumber}, LocationID = {equipment.LocationId}" +
+                 $"WHERE ID = {equipment.Id};";
+            var command = new SqlCommand(commandString, Connection);
+            command.ExecuteReader().Close();
 
-            }
+            return true;
+        }
 
         public void Dispose()
         {
