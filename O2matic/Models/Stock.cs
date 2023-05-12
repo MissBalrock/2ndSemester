@@ -10,15 +10,12 @@ namespace O2matic.Models
     public class Stock
     {
         public string StockName { get; set; }
-        public string Address { get; set; }
+        public string AddressId { get; set; }
 
-        public string Id { get; set; }
-
-        public Stock(string stockName, string address, string id)
+        public Stock(string stockName, string addressId, string id)
         {
             StockName = stockName;
-            Address = address;
-            Id = id;
+            AddressId = addressId;
         }
     }
     
