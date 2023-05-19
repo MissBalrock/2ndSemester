@@ -1,4 +1,5 @@
-﻿using O2matic.Models;
+﻿using O2matic.Model;
+using O2matic.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -55,6 +56,7 @@ namespace O2matic.Persistens
                         serialNumber: Convert.ToInt32(reader[2].ToString()),
                         registrationDate: registrationDate,
                         locationId: Convert.ToInt32(reader[4].ToString())
+                        //Device status
                         );
                     return result;
                 }
