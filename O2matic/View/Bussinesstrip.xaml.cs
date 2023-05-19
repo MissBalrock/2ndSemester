@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace O2matic
+namespace O2matic.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Bussinesstrip.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Bussinesstrip : UserControl
     {
-        public MainWindow()
+        public Bussinesstrip()
         {
             InitializeComponent();
-        }
-        private void CloseApp_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
