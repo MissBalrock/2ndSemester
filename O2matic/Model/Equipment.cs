@@ -18,14 +18,24 @@ namespace O2matic.Model
         public DateTime RegistrationDate { get; set; }
 
      
-        public Equipment(int id, int equipmentTypeId, int serialNumber, int locationId, string deviceStatus)
+        public Equipment(int id, int equipmentTypeId, int serialNumber, int locationId, string deviceStatus, DateTime registrationDate)
         {
             Id = id;
             EquipmentTypeId = equipmentTypeId;  
             SerialNumber = serialNumber;    
             LocationId = locationId;
             DeviceStatus = deviceStatus;
+            RegistrationDate = registrationDate;
            
+        }
+
+        public Equipment(int id, int equipmentTypeId, int serialNumber, DateTime registrationDate, int locationId)
+        {
+            Id = id;
+            EquipmentTypeId = equipmentTypeId;
+            SerialNumber = serialNumber;
+            RegistrationDate = registrationDate;
+            LocationId = locationId;
         }
     }
 }
