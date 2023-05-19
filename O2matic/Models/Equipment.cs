@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace O2matic.Models
 {
-    public class Equiptment
+    public class Equipment
     {
         public EquipmentType Type { get; set; }
         public int SerialNumber { get; set; }
@@ -14,7 +14,7 @@ namespace O2matic.Models
 
         public DateTime Date { get; set; }
 
-        public Equiptment(EquipmentType type, int serialNumber, int locationId)
+        public Equipment(EquipmentType type, int serialNumber, int locationId)
         {
             Type = type;
             SerialNumber = serialNumber;

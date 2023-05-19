@@ -42,7 +42,7 @@ namespace O2matic.Persistens
         }
         public Location Add(string address, string title, int equiptmentId, int bussinestripId, int customerId, int orderId, int stockId)
         {
-            Equiptment result = null;
+            Equipment result = null;
 
             if (!string.IsNullOrEmpty(address) &&
                 !string.IsNullOrEmpty(title) &&
