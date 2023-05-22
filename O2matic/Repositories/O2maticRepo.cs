@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace O2maticTracking.Repositories
 {
-    public class EquiptmentRepository : IDisposable
+    public class O2maticRepo : IDisposable
     {
         public SqlConnection Connection { get; private set; }
-        public EquiptmentRepository()
+        public O2maticRepo()
         {
-            var dataSource = "(local)\\SQLEXPRESS";
-            var initialCatalog = "O2maticDb";
+            string dataSource = "(local)\\SQLEXPRESS";
+            string initialCatalog = "O2maticDb";
 
-            var connectionString = $"Data Source={dataSource};Initial Catalog={initialCatalog};Integrated Security=True;TrustServerCertificate=True";
+            string connectionString = $"Data Source={dataSource};Initial Catalog={initialCatalog};Integrated Security=True;TrustServerCertificate=True";
             Connection = new SqlConnection(connectionString);
             Connection.Open();
         }
@@ -24,28 +24,28 @@ namespace O2maticTracking.Repositories
         public void Save(Equipment equipment)
         {
 
-            var commandString = "INSERT INTO Equipment (EquipmentTypeID, SerialNumber, RegistrationDate, LocationID) " +
+            string commandString = "INSERT INTO Equipment (EquipmentTypeID, SerialNumber, RegistrationDate, LocationID) " +
                 $"VALUES ({equipment.EquipmentTypeId}, '{equipment.SerialNumber}', {DateTime.Now}, {equipment.LocationId});";
-            var command = new SqlCommand(commandString, Connection);
+            SqlCommand command = new SqlCommand(commandString, Connection);
 
             command.ExecuteReader().Close();
         }
 
         public Equipment? Get(int id)
         {
-            var commandString = $"SELECT * FROM dbo.Equipment WHERE ID = {id};";
-            var command = new SqlCommand(commandString, Connection);
+            string commandString = $"SELECT * FROM dbo.Equipment WHERE ID = {id};";
+            SqlCommand command = new SqlCommand(commandString, Connection);
 
             Equipment? result = null;
 
-            using (var reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     // TODO:  Correct datetime reading.
                      
-                    var dateString = reader[3].ToString();
-                    var registrationDate = DateTime.UnixEpoch;
+                    string? dateString = reader[3].ToString();
+                    DateTime registrationDate = DateTime.UnixEpoch;
                     if (dateString != null)
                         registrationDate = DateTime.Parse(dateString);
                     
@@ -65,17 +65,17 @@ namespace O2maticTracking.Repositories
 
         public ICollection<Equipment> GetAll()
         {
-            var commandString = $"SELECT * FROM dbo.Equipment";
-            var command = new SqlCommand(commandString, Connection);
+            string commandString = $"SELECT * FROM dbo.Equipment";
+            SqlCommand command = new SqlCommand(commandString, Connection);
 
-            var result = new List<Equipment>();
+            List<Equipment> result = new List<Equipment>();
 
-            using (var reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var dateString = reader[3].ToString();
-                    var registrationDate = DateTime.UnixEpoch;
+                    string dateString = reader[3].ToString();
+                    DateTime registrationDate = DateTime.UnixEpoch;
                     if (dateString != null)
                         registrationDate = DateTime.Parse(dateString);
 
@@ -91,18 +91,44 @@ namespace O2maticTracking.Repositories
             return result;
         }
 
+        public EquipmentType? GetEquipmentType(int id)
+        {
+            string commandString = $"SELECT * FROM dbo.EquipmentType WHERE ID = {id};";
+            SqlCommand command = new SqlCommand(commandString, Connection);
+
+            EquipmentType? result = null;
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+
+                    string? name = reader[1].ToString();
+
+                    if (name == null)
+                        name = "n/a";
+
+                    result = new EquipmentType(
+                        id: Convert.ToInt32(reader[0].ToString()),
+                        name: name
+                        );
+                }
+            }
+            return result;
+        }
+
         public bool Update(Equipment equipment)
         {
 
-            var existing = Get(equipment.Id);
+            Equipment? existing = Get(equipment.Id);
 
             if (existing == null)
                 return false;
 
-            var commandString = "UPDATE Equipment" +
+            string commandString = "UPDATE Equipment" +
                  $"SET EquipmentTypeID = {equipment.EquipmentTypeId}, SerialNumber = {equipment.SerialNumber}, LocationID = {equipment.LocationId}" +
                  $"WHERE ID = {equipment.Id};";
-            var command = new SqlCommand(commandString, Connection);
+            SqlCommand command = new SqlCommand(commandString, Connection);
             command.ExecuteReader().Close();
 
             return true;

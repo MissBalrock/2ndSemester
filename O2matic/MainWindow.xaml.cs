@@ -28,8 +28,8 @@ namespace O2matic
 
         private void ClickMe_Click(object sender, RoutedEventArgs e)
         {
-            EquiptmentRepository repo = new EquiptmentRepository();
-            var wat = repo.Get(1);
+            O2maticRepo repo = new O2maticRepo();
+            var wat = repo.GetEquipmentType(1);
             Console.WriteLine(wat);
         }
     }
