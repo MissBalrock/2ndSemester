@@ -1,5 +1,4 @@
-﻿using O2maticTracking.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,23 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace O2matic
+namespace O2matic.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RegistreEquipmentView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RegistreEquipmentView : UserControl
     {
-        public MainWindow()
+        public RegistreEquipmentView()
         {
             InitializeComponent();
-        }
-
-        private void ClickMe_Click(object sender, RoutedEventArgs e)
-        {
-            EquiptmentRepository repo = new EquiptmentRepository();
-            var wat = repo.Get(1);
-            Console.WriteLine(wat);
         }
     }
 }
