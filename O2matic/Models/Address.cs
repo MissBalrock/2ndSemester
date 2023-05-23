@@ -14,5 +14,14 @@ namespace O2maticTracking.Models
         public string PostalCode { get; set;}
         public string CountryCode { get; set;}
 
+        public Address(int id, string addressLine1, string addressLine2, string postalCode, string countryCode)
+        {
+            Id = id;
+            AddressLine1 = addressLine1;
+            AddressLine2 = addressLine2;
+            PostalCode = postalCode;
+            CountryCode = countryCode;
+        }
+
     }
 }

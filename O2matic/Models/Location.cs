@@ -13,5 +13,12 @@ namespace O2maticTracking.Models
         public Address Address { get; set; }
         public string Name { get; set; }
 
+        public Location(int id, int addressId, string name)
+        {
+            Id = id;
+            AddressId = addressId;
+            Name = name;
+        }
+
     }
 }

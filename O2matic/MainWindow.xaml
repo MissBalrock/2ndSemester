@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Name="ClickMe" Content="Click me" FontSize="30" Click="ClickMe_Click">
-
-        </Button>
+        <Button Name="ClickMe" Content="Click me" FontSize="30" Click="ClickMe_Click"/>
+        <!--<Button Content="Open Register Equipment Window" Click="Button_Click" />-->
     </Grid>
 </Window>
