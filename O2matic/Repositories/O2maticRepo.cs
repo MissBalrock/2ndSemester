@@ -24,8 +24,8 @@ namespace O2maticTracking.Repositories
         public void Save(Equipment equipment)
         {
 
-            string commandString = "INSERT INTO Equipment (EquipmentTypeID, SerialNumber, RegistrationDate, LocationID) " +
-                $"VALUES ({equipment.EquipmentTypeId}, '{equipment.SerialNumber}', {DateTime.Now}, {equipment.LocationId});";
+            string commandString = "INSERT INTO Equipment (EquipmentTypeID, SerialNumber, LocationID) " +
+                $"VALUES ({equipment.EquipmentTypeId}, '{equipment.SerialNumber}', {equipment.LocationId});";
             SqlCommand command = new SqlCommand(commandString, Connection);
 
             command.ExecuteReader().Close();
@@ -41,15 +41,12 @@ namespace O2maticTracking.Repositories
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
-                {
-                    // TODO:  Correct datetime reading.
-                     
+                {                   
                     string? dateString = reader[3].ToString();
                     DateTime registrationDate = DateTime.UnixEpoch;
                     if (dateString != null)
                         registrationDate = DateTime.Parse(dateString);
-                    
-                   // DateTime registrationDate = DateTime.UtcNow; //tager tiden den bliver hentet! Tid er det væreste!!!
+
 
                     result = new Equipment(
                         id: Convert.ToInt32(reader[0].ToString()),
