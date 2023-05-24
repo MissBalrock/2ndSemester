@@ -40,8 +40,6 @@ namespace O2matic
             var locations = repo.GetLocations();
 
 
-
-
             var addresses = repo.GetAddresses();
             foreach (Location current in locations)
             {
