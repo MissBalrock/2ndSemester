@@ -1,4 +1,5 @@
-﻿using O2maticTracking.Models;
+﻿using O2matic.Models;
+using O2maticTracking.Models;
 using O2maticTracking.Repositories;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace O2maticTracking.ViewModels
             EquipmentTypes = new ObservableCollection<EquipmentType>(_repository.GetEquipmentTypes());
             Locations = new ObservableCollection<Location>(_repository.GetLocations());
 
-           // SubmitCommand = new RelayCommand(Submit); // assuming RelayCommand is a ICommand implementation
+           SubmitCommand = new RelayCommand((obj) => Submit());
         }
 
         public ObservableCollection<EquipmentType> EquipmentTypes { get; }
@@ -41,16 +42,16 @@ namespace O2maticTracking.ViewModels
 
         private void Submit()
         {
-            // Handle the submission logic here...
 
             var equipmentType = SelectedEquipmentType;
             var location = SelectedLocation;
-            var serialNumber = SerialNumber;
+            var serialNumber = int.Parse(SerialNumber);
+            var toSave = new Equipment(equipmentType.Id, serialNumber, DateTime.Now, location.Id);
 
-            // perform your operations with the selected values
+            _repository.Save(toSave);
+
         }
 
-        // INotifyPropertyChanged implementation goes here...
     }
     
 }

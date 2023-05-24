@@ -16,6 +16,14 @@ namespace O2maticTracking.Models
             RegistrationDate = registrationDate;
             LocationId = locationId;
         }
+        
+        public Equipment(int equipmentTypeId, int serialNumber, DateTime registrationDate, int locationId)
+        {
+            EquipmentTypeId = equipmentTypeId;
+            SerialNumber = serialNumber;
+            RegistrationDate = registrationDate;
+            LocationId = locationId;
+        }
 
         public int Id { get; set; }
         public int EquipmentTypeId { get; set; }
