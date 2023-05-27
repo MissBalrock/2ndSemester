@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace O2maticTracking.ViewModels
@@ -45,12 +46,34 @@ namespace O2maticTracking.ViewModels
 
             var equipmentType = SelectedEquipmentType;
             var location = SelectedLocation;
-            var serialNumber = int.Parse(SerialNumber);
-            var toSave = new Equipment(equipmentType.Id, serialNumber, DateTime.Now, location.Id);
+            
+            int? serialNumber = ValidateSerialNumber(SerialNumber);
+
+            if (serialNumber == null)
+            {
+            
+                //MessageBox.Show("Invalid username or password.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //return;
+            }
+
+            var toSave = new Equipment(equipmentType.Id, (int)serialNumber, DateTime.Now, location.Id);
 
             _repository.Save(toSave);
 
         }
+
+        public int? ValidateSerialNumber(string serialNumber)
+        {
+            try
+            {
+                return int.Parse(serialNumber);
+            } 
+            catch
+            {
+                return null;
+            }
+        }
+
 
     }
     
