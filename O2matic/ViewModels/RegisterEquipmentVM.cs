@@ -66,7 +66,7 @@ namespace O2maticTracking.ViewModels
         {
             try
             {
-                return int.Parse(serialNumber);
+                return int.Parse(serialNumber.Trim());
             } 
             catch
             {
