@@ -1,4 +1,7 @@
-﻿using System;
+﻿using O2matic.Views;
+using O2maticTracking.Models;
+using O2maticTracking.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +27,30 @@ namespace O2matic
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterEquipment registerEquipment = new RegisterEquipment();
+            registerEquipment.Show();
+        }
+
+        //private void ClickMe_Click(object sender, RoutedEventArgs e)
+        //{
+        //    O2maticRepo repo = new O2maticRepo();
+        //    var locations = repo.GetLocations();
+
+
+        //    var addresses = repo.GetAddresses();
+        //    foreach (Location current in locations)
+        //    {
+
+        //        var address = addresses.First(a => a.Id == current.AddressId);
+        //        //var address = repo.GetAddress(current.AddressId);
+        //        current.Address = address;
+
+
+        //    }
+
+        //}
     }
 }
