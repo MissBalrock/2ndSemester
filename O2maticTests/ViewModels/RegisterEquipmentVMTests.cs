@@ -56,12 +56,5 @@ namespace O2maticTracking.ViewModels.Tests
             Assert.AreEqual(020101204500003, result);
         }
 
-
-
-
-
-
-
-
     }
 }

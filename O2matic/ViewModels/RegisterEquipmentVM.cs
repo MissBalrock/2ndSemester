@@ -43,23 +43,21 @@ namespace O2maticTracking.ViewModels
 
         private void Submit()
         {
-
-            var equipmentType = SelectedEquipmentType;
-            var location = SelectedLocation;
+            EquipmentType? equipmentType = SelectedEquipmentType;
+            Location? location = SelectedLocation;
             
             int? serialNumber = ValidateSerialNumber(SerialNumber);
 
             if (serialNumber == null)
             {
-            
-                //MessageBox.Show("Invalid username or password.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //return;
+
+                MessageBox.Show("Invalid serial number.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
-            var toSave = new Equipment(equipmentType.Id, (int)serialNumber, DateTime.Now, location.Id);
+            Equipment? toSave = new Equipment(equipmentType.Id, (int)serialNumber, DateTime.Now, location.Id);
 
             _repository.Save(toSave);
-
         }
 
         public int? ValidateSerialNumber(string serialNumber)
